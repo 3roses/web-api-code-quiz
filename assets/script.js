@@ -1,6 +1,7 @@
 
-var userScore = 0
+var userScore;
 var i = 0
+var highScore;
 
 const startButton = document.getElementById('start-btn') 
 const nextButton = document.getElementById('next-btn')
@@ -85,6 +86,7 @@ function nextQuestion() {
 }
 
 function endGame (){
+    clearInterval(timerInterval)
     alert(`Congratulations, you have completed the test with a score of ${userScore}/3`)
     let initials = prompt('Enter your initials to save your score')
     let playAgain = confirm ('Would you like to play again?')
@@ -93,9 +95,10 @@ function endGame (){
         setTime()
     }
     else {
-        alert(`Thanks for playing ${initials}`)
-        clearInterval(timerInterval)
+        alert(`Thanks for playing ${initials}`)    
     }
+    localStorage.setItem("score", userScore)
+    localStorage.setItem("user", initials)
 }
 
 function setTime() {
@@ -103,7 +106,7 @@ function setTime() {
     timerInterval = setInterval(function() {
     secondsLeft--;
     timeEl.textContent = secondsLeft + " seconds left to complete";
-    if(secondsLeft === 0) {
+    if(secondsLeft <= 0) {
         clearInterval(timerInterval);
         endGame();
     }
